@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 /* Global declarations */
 /* Variables */
@@ -45,14 +46,6 @@ void error();
 /* main driver */
 int main(int argc, char *argv[]) {
 /* Open the input data file and process its contents */
-	// if ((in_fp = fopen("front.in", "r")) == NULL)
- // 		printf("ERROR - cannot open front.in \n");
-	// else {
-	// 	getChar();
-	// do {
-	// 	lex();
- // 		} while (nextToken != EOF);
- // 	}
 
 	if(argc != 2){
 		printf("More arguments needed\n");
@@ -66,9 +59,9 @@ int main(int argc, char *argv[]) {
 
 	FILE* file = fopen(argv[1],"r"); //read input file
 
-	while (fgets(line, sizeof(line))){
+	while (fgets(line, sizeof(line),file)){
 		len = strlen(line);
-		pos = 0;
+		currPos = 0;
 		getChar();
 		do {
 			lex();
@@ -131,7 +124,8 @@ void addChar() {
 /* getChar - a function to get the next character of
  input and determine its character class */
 void getChar() {
-	if ((nextChar = getc(in_fp)) != EOF) {
+	if (currPos < len) {
+		nextChar = line[currPos++];
 		if (isalpha(nextChar))
 			charClass = LETTER;
 		else if (isdigit(nextChar))
@@ -191,7 +185,7 @@ int lex() {
 			lexeme[0] = 'E';
 			lexeme[1] = 'O';
 			lexeme[2] = 'F';
-			lexeme[3] = 0;
+			lexeme[3] = '/0';
 			break;
 	} /* End of switch */
 
