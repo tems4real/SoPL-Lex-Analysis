@@ -11,7 +11,10 @@ char nextChar;
 int lexLen;
 int token;
 int nextToken;
-FILE *in_fp, *fopen();
+// FILE *in_fp, *fopen();
+char line[256];
+int currPos;
+int len;
 
 /* Function declarations */
 void addChar();
@@ -40,16 +43,37 @@ void error();
 
 /******************************************************/
 /* main driver */
-int main() {
+int main(int argc, char *argv[]) {
 /* Open the input data file and process its contents */
-	if ((in_fp = fopen("front.in", "r")) == NULL)
- 		printf("ERROR - cannot open front.in \n");
-	else {
+	// if ((in_fp = fopen("front.in", "r")) == NULL)
+ // 		printf("ERROR - cannot open front.in \n");
+	// else {
+	// 	getChar();
+	// do {
+	// 	lex();
+ // 		} while (nextToken != EOF);
+ // 	}
+
+	if(argc != 2){
+		printf("More arguments needed\n");
+		return 0;
+	}
+
+	if(access(argv[1],F_OK) == -1){
+		printf("Input file not found\n");
+		return -1;
+	}
+
+	FILE* file = fopen(argv[1],"r"); //read input file
+
+	while (fgets(line, sizeof(line))){
+		len = strlen(line);
+		pos = 0;
 		getChar();
-	do {
-		lex();
+		do {
+			lex();
  		} while (nextToken != EOF);
- 	}
+	}
  	return 0;
 }
 /*****************************************************/
